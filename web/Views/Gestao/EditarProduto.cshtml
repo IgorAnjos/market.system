@@ -1,0 +1,37 @@
+@model mktSystem.Models.ProdutoDTO;
+@{
+    Layout="_AdmLayout";
+}
+<h3>Editar Produto</h3>
+<hr>
+<form class="form-horizontal" asp-action="Atualizar" asp-controller="Produto" method="POST">
+    <input type="hidden" asp-for="Id">
+    
+    <label asp-for="Nome">Nome</label>
+    <input type="text" asp-for="Nome" class="form-control" placeholder="Nome da Produto">
+    <span asp-validation-for="Nome"></span>
+<br>   
+    <label for="CategoriaID">Categoria</label>
+    <select class="form-control" asp-for="CategoriaID" asp-items='@(new SelectList(@ViewBag.Categorias,"Id","Nome"))'></select>
+<br>   
+    <label for="CategoriaID">Fornecedor</label>
+    <select class="form-control" asp-for="FornecedorID" asp-items='@(new SelectList(@ViewBag.Fornecedores,"Id","Nome"))'></select>
+<br>    
+    <label for="PrecoCusto">Preço de Custo</label>
+    <input class="form-control" asp-for="PrecoCusto" type="number" step="any" placeholder="99.99">
+    <span asp-validation-for="PrecoCusto"></span>
+<br>
+    <label for="PrecoVenda">Preço de Venda</label>
+    <input class="form-control" asp-for="PrecoVenda" type="number" step="any" placeholder="99.99">
+    <span asp-validation-for="PrecoVenda"></span>
+<br>
+    <label for="MEdicao">Medição</label>
+    <select asp-for="Medicao">
+        <option value="0">Litro</option>
+        <option value="1">Kilo</option>
+        <option value="2">Unidade</option>
+    </select>
+    <br>    
+    <br>
+    <button class="btn btn-success">Gravar</button>
+</form>  
