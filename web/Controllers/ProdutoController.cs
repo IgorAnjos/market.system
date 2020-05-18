@@ -40,5 +40,44 @@ namespace mktSystemeb.Controllers
                 return View("../Gestao/NovoProduto");
             }
         }
+        [HttpPost]
+        public IActionResult Atualizar(ProdutoDTO produtoDTO)
+        {
+            if(ModelState.IsValid)
+            {
+                var produto = database.Produtos.First(_ => _.Id == produtoDTO.Id);
+                produto.Nome = produtoDTO.Nome;
+                produto.Categoria = database.Categorias.First(_ => _.Id == produtoDTO.CategoriaID);
+                produto.Fornecedor = database.Fornecedores.First(_ => _.Id == produtoDTO.FornecedorID);
+                produto.PrecoCusto = produtoDTO.PrecoCusto;
+                produto.PrecoVenda = produtoDTO.PrecoVenda;
+                produto.Medicao = produtoDTO.Medicao;
+
+                database.SaveChanges();
+                return RedirectToAction("Produtos", "Gestao");
+            }
+            else
+            {
+                ViewBag.Categorias = database.Categorias.ToList();
+                ViewBag.Fornecedores = database.Fornecedores.ToList();
+                return View("../Gestao/NovoProduto");
+            }
+        }
+
+        public IActionResult Deletar(int id)
+        {
+            if(id > 0)
+            {
+                var produto = database.Produtos.First(_ => _.Id == id);
+                produto.Status = false;
+
+                database.SaveChanges();
+                return RedirectToAction("Produtos","Gestao");
+            }else
+            {
+
+            }
+            return View("../Gestao/Produtos");
+        }
     }
 }
