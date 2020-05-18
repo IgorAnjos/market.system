@@ -1,0 +1,16 @@
+@model mktSystem.Models.CategoriaDTO;
+@{
+    Layout="_AdmLayout";
+}
+<h3>Editar Categoria</h3>
+<hr>
+<form class="form-horizontal" asp-action="Atualizar" asp-controller="Categoria" method="POST">
+    <input type="hidden" asp-for="Id">
+
+    <label asp-for="Nome">Nome</label>
+    <input type="text" asp-for="Nome" class="form-control" placeholder="Nome da Categoria">
+    <span asp-validation-for="Nome"></span>
+    
+    <br>
+    <button class="btn btn-success">Gravar</button>
+</form>  

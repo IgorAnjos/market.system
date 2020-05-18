@@ -1,0 +1,6 @@
+#Comentário
+
+*.log
+
+/obj
+/bin
