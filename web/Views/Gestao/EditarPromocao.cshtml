@@ -1,0 +1,22 @@
+@model mktSystem.Models.PromocaoDTO;
+@{
+    Layout="_AdmLayout";
+}
+<h3>Nova Promoção</h3>
+<hr>
+<form class="form-horizontal" asp-action="Atualizar" asp-controller="Promocao" method="POST">
+    <input type="hidden" asp-for="Id">
+    
+    <label asp-for="Nome">Nome</label>
+    <input type="text" asp-for="Nome" class="form-control" placeholder="Nome da Promoção">
+    <span asp-validation-for="Nome"></span>
+    
+    <label for="ProdutoID">Produto</label>
+    <select class="form-control" asp-for="ProdutoID" asp-items='@(new SelectList(@ViewBag.Produtos,"Id","Nome"))'></select>
+    
+    <label asp-for="Porcentagem">Porcentagem</label>
+    <input type="number" asp-for="Porcentagem" class="form-control" min="0" max="100" placeholder="10%">
+    <span asp-validation-for="Porcentagem"></span>
+    <br>
+    <button class="btn btn-success">Gravar</button>
+</form>  

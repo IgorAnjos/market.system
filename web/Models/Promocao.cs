@@ -7,7 +7,7 @@ namespace mktSystem.Models
 {
     public class Promocao
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
         public Produto Produto { get; set; }
         public float Porcentagem { get; set; }
