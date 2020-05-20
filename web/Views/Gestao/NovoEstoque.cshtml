@@ -1,0 +1,18 @@
+@model mktSystem.Models.Estoque;
+@{
+    Layout="_AdmLayout";
+}
+<h3>Novo Estoque</h3>
+<hr>
+<form class="form-horizontal" asp-action="Salvar" asp-controller="Promocao" method="POST">
+    <input type="hidden" asp-for="Id" value="0">
+        
+    <label for="Produto">Produto</label>
+    <select class="form-control" asp-for="Produto" asp-items='@(new SelectList(@ViewBag.Produtos,"Id","Nome"))'></select>
+    
+    <label asp-for="Quantidade">Quantidade</label>
+    <input type="number" asp-for="Quantidade" class="form-control" min="0" max="100" placeholder="10%">
+    <span asp-validation-for="Quantidade"></span>
+    <br>
+    <button class="btn btn-success">Gravar</button>
+</form>  
