@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using mktSystem.Data;
 using mktSystem.Models;
 
@@ -75,9 +76,32 @@ namespace mktSystemeb.Controllers
                 return RedirectToAction("Produtos","Gestao");
             }else
             {
-
+                return RedirectToAction("Produtos","Gestao");
             }
-            return View("../Gestao/Produtos");
+        }
+
+        public IActionResult Produto(int id)
+        {
+            if(id > 0)
+            {
+                var produto = database.Produtos.Where(_ => _.Status == true).Include(p => p.Categoria).Include(c => c.Fornecedor).First(_ => _.Id == id);
+                if(produto != null)
+                {
+                    Response.StatusCode = 200;
+                    return Json(produto);
+                }
+                else
+                {
+                    Response.StatusCode = 404;
+                    return Json(null);
+                }
+                    
+            }
+            else
+            {
+                Response.StatusCode = 404;
+                return Json(null);
+            }
         }
     }
 }

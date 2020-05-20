@@ -67,7 +67,7 @@ namespace mktSystem.Controllers
             }
             else
             {
-                return View("../Gestao/Fornecedores");
+                return RedirectToAction("Fornecedores","Gestao");
             }
         }
     }

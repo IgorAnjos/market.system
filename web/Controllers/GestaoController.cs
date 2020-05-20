@@ -70,8 +70,8 @@ namespace mktSystem.Controllers
         }
         public IActionResult NovoProduto()
         {
-            ViewBag.Categorias = database.Categorias.ToList();
-            ViewBag.Fornecedores = database.Fornecedores.ToList();
+            ViewBag.Categorias = database.Categorias.Where(_c => _c.Status == true).ToList();
+            ViewBag.Fornecedores = database.Fornecedores.Where(_f => _f.Status == true).ToList();
             return View();
         }
 
@@ -86,13 +86,55 @@ namespace mktSystem.Controllers
             produtoDTO.PrecoCusto = produto.PrecoCusto;
             produtoDTO.PrecoVenda = produto.PrecoVenda;
             produto.Medicao = produto.Medicao;
-            ViewBag.Categorias = database.Categorias.ToList();
-            ViewBag.Fornecedores = database.Fornecedores.ToList();
+            ViewBag.Categorias = database.Categorias.Where(_ => _.Status == true).ToList();
+            ViewBag.Fornecedores = database.Fornecedores.Where(_ => _.Status == true).ToList();
             return View(produtoDTO);
         }
 
         [HttpPost]
         public IActionResult Deletar(int id)
+        {
+            return View();
+        }
+
+        public IActionResult Promocoes()
+        {
+            var promocoes = database.Promocoes.Include(p => p.Produto).Where(_p => _p.Status == true).ToList();
+            return View(promocoes);
+        }
+
+        public IActionResult NovaPromocao()
+        {
+            ViewBag.Produtos = database.Produtos.Where(_p => _p.Status == true).ToList();
+            return View();
+        }
+
+        public IActionResult EditarPromocao(int id)
+        {
+            var promocao = database.Promocoes.Include(promocao => promocao.Produto).First(_ => _.Id == id);
+            
+            PromocaoDTO promocaoDTO = new PromocaoDTO();
+            promocaoDTO.Id = promocao.Id;
+            promocaoDTO.Nome = promocao.Nome;
+            promocaoDTO.ProdutoID = promocao.Produto.Id;
+            promocaoDTO.Porcentagem = promocao.Porcentagem;
+
+            ViewBag.Produtos = database.Produtos.Where(_ => _.Status == true).ToList();
+            return View(promocaoDTO);
+        }
+
+        public IActionResult Estoque()
+        {
+            return View();
+        }
+
+        public IActionResult NovoEstoque()
+        {
+            ViewBag.Produtos = database.Produtos.Where(_p => _p.Status == true).ToList();
+            return View();
+        }
+
+        public IActionResult EditarEstoque()
         {
             return View();
         }

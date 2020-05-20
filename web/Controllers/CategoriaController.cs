@@ -60,7 +60,7 @@ namespace mktSystem.Controllers
                 return RedirectToAction("Categorias", "Gestao");
             }
             else
-                return View("../Gestao/Categorias");
+                return RedirectToAction("Categorias", "Gestao");
         }
     }
 }
