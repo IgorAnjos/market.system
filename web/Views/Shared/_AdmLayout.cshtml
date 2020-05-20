@@ -24,8 +24,10 @@
   <script src="~/vendor/jquery/jquery.min.js"></script>
   <!-- Core plugin JavaScript-->
   <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Utilizar DataTable -->
   <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-
+  <!-- Utilizar Thema DataTable Bootstrap 4 -->
+  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" ></script>
 </head>
 
 <body id="page-top">
@@ -90,9 +92,19 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" asp-action="Promocoes" asp-controller="Gestao">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Promoções</span></a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" asp-action="Produtos" asp-controller="Gestao">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>Produtos</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" asp-action="Estoque" asp-controller="Gestao">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Estoque</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" asp-action="Categorias" asp-controller="Gestao">
@@ -105,7 +117,7 @@
           <span>Fornecedores</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link">
           <i class="fas fa-fw fa-table"></i>
           <span>Funcionários</span></a>
       </li>
