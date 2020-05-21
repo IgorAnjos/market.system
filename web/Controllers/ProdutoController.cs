@@ -36,8 +36,8 @@ namespace mktSystemeb.Controllers
             }
             else
             {
-                ViewBag.Categorias = database.Categorias.ToList();
-                ViewBag.Fornecedores = database.Fornecedores.ToList();
+                ViewBag.Categorias = database.Categorias.Where(_ => _.Status == true).ToList();
+                ViewBag.Fornecedores = database.Fornecedores.Where(_ => _.Status == true).ToList();
                 return View("../Gestao/NovoProduto");
             }
         }
@@ -59,8 +59,8 @@ namespace mktSystemeb.Controllers
             }
             else
             {
-                ViewBag.Categorias = database.Categorias.ToList();
-                ViewBag.Fornecedores = database.Fornecedores.ToList();
+                ViewBag.Categorias = database.Categorias.Where(_ => _.Status == true).ToList();
+                ViewBag.Fornecedores = database.Fornecedores.Where(_ => _.Status == true).ToList();
                 return View("../Gestao/NovoProduto");
             }
         }
@@ -85,17 +85,27 @@ namespace mktSystemeb.Controllers
             if(id > 0)
             {
                 var produto = database.Produtos.Where(_ => _.Status == true).Include(p => p.Categoria).Include(c => c.Fornecedor).First(_ => _.Id == id);
+                
                 if(produto != null)
                 {
-                    Response.StatusCode = 200;
-                    return Json(produto);
+                    var estoque = database.Estoques.First(e => e.Produto.Id == produto.Id);
+                    if(estoque == null)
+                        return Json(estoque);
+                    else
+                    {
+                        var promocao = database.Promocoes.First(p => p.Produto.Id == produto.Id && p.Status == true);
+                        if(promocao != null){
+                            produto.PrecoVenda -= (produto.PrecoVenda * promocao.Porcentagem / 100);
+                        }
+                        Response.StatusCode = 200;
+                        return Json(produto);
+                    }
                 }
                 else
                 {
                     Response.StatusCode = 404;
                     return Json(null);
-                }
-                    
+                }       
             }
             else
             {

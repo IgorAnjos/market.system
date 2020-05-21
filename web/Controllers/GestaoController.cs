@@ -125,7 +125,8 @@ namespace mktSystem.Controllers
 
         public IActionResult Estoque()
         {
-            return View();
+            var listEstoque = database.Estoques.Include(_ => _.Produto).ToList();
+            return View(listEstoque);
         }
 
         public IActionResult NovoEstoque()
@@ -134,9 +135,12 @@ namespace mktSystem.Controllers
             return View();
         }
 
-        public IActionResult EditarEstoque()
+        public IActionResult EditarEstoque(int id)
         {
-            return View();
+            var estoque = database.Estoques.First(_ => _.Id == id);
+
+            ViewBag.Produtos = database.Produtos.Where(_ => _.Status == true).ToList();
+            return View(estoque);
         }
     }
 }

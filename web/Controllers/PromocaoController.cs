@@ -32,7 +32,7 @@ namespace web.Controllers
             else
             {
                 ViewBag.Produtos = database.Produtos.Where(_p => _p.Status == true).ToList();
-                return View("../Gestao/NovaPromocao");
+                return RedirectToAction("Promocoes","Gestao");
             }
         }
 
@@ -53,7 +53,7 @@ namespace web.Controllers
             else
             {
                 ViewBag.Produtos = database.Produtos.Where(_ => _.Status == true).ToList();
-                return View("../Gestao/NovaPromocao");
+                return RedirectToAction("Promocoes","Gestao");
             }
         }
         

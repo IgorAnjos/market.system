@@ -1,5 +1,7 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using mktSystem.Data;
+using mktSystem.Models;
 
 namespace web.Controllers
 {
@@ -11,9 +13,42 @@ namespace web.Controllers
             this.database = _dbContext;
         }
 
-        public IActionResult Estoque()
+        [HttpPost]
+        public IActionResult Salvar(Estoque _estoque)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                database.Estoques.Add(_estoque);
+                database.SaveChanges();
+                return RedirectToAction("Estoque","Gestao");
+            }
+            else
+            {
+                ViewBag.Estoque = database.Produtos.Where(_ => _.Status == true).ToList();
+                return RedirectToAction("NovoEstoque","Gestao");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Atualizar(Estoque _estoque)
+        {
+            if(ModelState.IsValid)
+            {
+                Estoque estoque = new Estoque();
+
+                estoque.Produto = _estoque.Produto;
+                estoque.Quantidade = _estoque.Quantidade;
+
+                database.SaveChanges();
+                return RedirectToAction("Estoque","Gestao");
+            }
+            else
+            {
+                ViewBag.Categorias = database.Categorias.ToList();
+                ViewBag.Fornecedores = database.Fornecedores.ToList();
+                return RedirectToAction("EditarEstoque","Gestao");
+                // outra forma return View("../Gestao/EditarEstoque");
+            }
         }
     }
 }

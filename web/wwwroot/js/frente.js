@@ -4,8 +4,18 @@
 var endereco = "https://localhost:5001/Produto/Produto/";
 var produto;
 var compra = [];
+var _totalVenda = 0.0;
+
+$("#posVenda").hide();
+
+AtualizarTotal();
+
 
 //Funções
+function AtualizarTotal(){
+    $("#totalVenda").html(_totalVenda);
+}
+
 function preencheForm(dadosProduto){ // recebo do backend
     $("#txtNome").val(dadosProduto.nome); // passando para os campos o valor 
     $("#txtCategoria").val(dadosProduto.categoria.nome);
@@ -25,6 +35,12 @@ function ResetFormProduto(){
 function addProduto(p,q){
     var produtoTemp = {};
     Object.assign(produtoTemp,produto);
+
+    var venda = {produto: produtoTemp, quantidade: q, subtotal: produtoTemp.precoVenda * q};
+    
+    _totalVenda += venda.subtotal;
+    AtualizarTotal();
+
     compra.push(produtoTemp);
     
     $("#tbCompra").append(`<tr>
@@ -75,4 +91,47 @@ $("#pesquisar").click(function() {
     }).fail(function(){
         alert("Produto inválido");
     });
+});
+
+// Finalização de venda
+
+$("#btnFinalizaVenda").click(function(){
+    if(_totalVenda <= 0){
+        alert("Compra Inválida nenhum produto adicionado");
+        return;
+    }
+
+    var valorPago = $("#txtValorPago").val();
+    if(!isNaN(valorPago))
+    {
+        if(valorPago >= _totalVenda)
+        {
+            console.log(valorPago);
+            $("#posVenda").show();
+            $("#preVenda").hide();
+            $("#txtValorPago").prop("disabled", true);
+            var valorTroco = valorPago - _totalVenda;
+            $("#txtValorTroco").val(valorTroco);
+        }
+        else
+        {
+            alert("Valor Pago é inferior ao valor da venda");
+        }
+    }
+    else
+    {
+        alert("Valor Pago Inválido");
+    }
+});
+
+function resetModal(){
+    $("#posVenda").hide();
+    $("#preVenda").show();
+    $("#txtValorPago").prop("disabled", false);
+    $("#txtValorPago").val("");
+    $("#txtValorTroco").val("");
+}
+
+$("#btnFechar").click(function(){
+    resetModal();
 });

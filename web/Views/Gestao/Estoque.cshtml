@@ -7,3 +7,42 @@
 <hr>
 <a asp-action="NovoEstoque" asp-controller="Gestao" class="btn btn-success">Novo Estoque</a>
 <hr>
+
+<script>
+     $(document).ready( function () {
+        $('#thEstoque').DataTable({
+            "language": {
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "Nenhum registro encontrado",                    
+            "search": "Buscar:",
+            "info": "Mostrando _PAGE_ de _PAGES_",
+            "paginate": {
+                "first": "Primeiro",
+                "next": "Próximo",
+                "previous": "Anterior",
+                "last": "Último"
+                }
+            }
+        });
+    }); 
+</script>
+
+<table id="thEstoque" class="table table-striped table-bordred">
+    <thead>
+        <td>Id</td>
+        <td>Produto</td>
+        <td>Quantidade</td>
+        <td>Ação</td>
+    </thead>
+    <tbody>
+        @foreach (var estoque in Model)
+         {
+             <tr>
+                 <td>@estoque.Id</td>
+                 <td>@estoque.Produto.Nome</td>
+                 <td>@estoque.Quantidade</td>
+                 <td><a class="btn btn-primary" href="/Gestao/EditarEstoque/@estoque.Id">Editar</a></td>
+             </tr>
+         }
+    </tbody>
+</table>
