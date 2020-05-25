@@ -1,7 +1,9 @@
 // JQuery
 
-//Declaração de variáveis
+//Declaração de variáveis alterar para o endereço do servidor
 var endereco = "https://localhost:5001/Produto/Produto/";
+var enderecoVenda = "https://localhost:5001/GerarVenda/GerarVenda/";
+
 var produto;
 var compra = [];
 var _totalVenda = 0.0;
@@ -21,8 +23,8 @@ function preencheForm(dadosProduto){ // recebo do backend
     $("#txtCategoria").val(dadosProduto.categoria.nome);
     $("#txtFornecedor").val(dadosProduto.fornecedor.nome);
     $("#txtPrecoVenda").val(dadosProduto.precoVenda);
-
 }
+
 function ResetFormProduto(){
     $("#txtcodProduto").val("");
     $("#txtNome").val(""); 
@@ -42,7 +44,7 @@ function addProduto(p,q){
     AtualizarTotal();
 
     compra.push(produtoTemp);
-    
+    console.log(produtoTemp);
     $("#tbCompra").append(`<tr>
         <td>${p.id}</td>
         <td>${p.nome}</td>
@@ -58,10 +60,11 @@ $("#formProduto").on("submit", function(event){
     event.preventDefault(); //impedir o carregamento 
     var produtoTabela = produto;
     var qntd = $("#txtQuantidade").val();
-    console.log(qntd);
-    console.log(produtoTabela);
+    //console.log(qntd);
+    //console.log(produtoTabela);
     addProduto(produtoTabela,qntd);
     ResetFormProduto();
+    //produto = undefined;
 });
 
 //Ajax
@@ -87,7 +90,7 @@ $("#pesquisar").click(function() {
         }
         produto.medicao = med;
         preencheForm(produto);
-        console.log(produto);
+        //console.log(produto);
     }).fail(function(){
         alert("Produto inválido");
     });
@@ -112,6 +115,28 @@ $("#btnFinalizaVenda").click(function(){
             $("#txtValorPago").prop("disabled", true);
             var valorTroco = valorPago - _totalVenda;
             $("#txtValorTroco").val(valorTroco);
+
+            // processar array de compra
+            compra.forEach(elemento => {
+                elemento.produto = elemento. produto.id;
+            });
+
+            //Preparar um novo objeto
+            var venda = {total: _totalVenda, troco: valorTroco, produtos: compra};
+
+            // Enviar dados para o backend
+            $.ajax({
+                type:"POST",
+                url: enderecoVenda,
+                dataType: "json",
+                contentType: "application/json",
+                data: JSON.stringify(venda),
+                success: function (data){
+                    console.log("Dados enviados");
+                    console.log(data);
+                }
+            });
+
         }
         else
         {

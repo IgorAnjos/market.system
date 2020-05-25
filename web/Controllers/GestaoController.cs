@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using mktSystem.Data;
@@ -7,6 +8,7 @@ using mktSystem.Models;
 
 namespace mktSystem.Controllers
 {
+    //[Authorize]
     public class GestaoController : Controller
     {
         private readonly ApplicationDbContext database;
@@ -141,6 +143,19 @@ namespace mktSystem.Controllers
 
             ViewBag.Produtos = database.Produtos.Where(_ => _.Status == true).ToList();
             return View(estoque);
+        }
+
+        public IActionResult Relatorio()
+        {
+            var listaVendas = database.Vendas.ToList();
+            return View(listaVendas);
+        }
+
+        [HttpPost]
+        public IActionResult RelatorioVendas()
+        {
+            var vendas = database.Vendas.ToList();
+            return Ok(vendas);
         }
     }
 }

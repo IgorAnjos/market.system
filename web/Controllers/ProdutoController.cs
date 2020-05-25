@@ -90,22 +90,26 @@ namespace mktSystemeb.Controllers
                 {
                     var estoque = database.Estoques.First(e => e.Produto.Id == produto.Id);
                     if(estoque == null)
-                        return Json(estoque);
-                    else
                     {
-                        var promocao = database.Promocoes.First(p => p.Produto.Id == produto.Id && p.Status == true);
-                        if(promocao != null){
-                            produto.PrecoVenda -= (produto.PrecoVenda * promocao.Porcentagem / 100);
-                        }
-                        Response.StatusCode = 200;
-                        return Json(produto);
+                        produto = null;
+                        // return Json(estoque);
                     }
+                }
+                
+                if(produto != null)
+                {
+                    Response.StatusCode = 200;
+                    return Json(produto);
                 }
                 else
                 {
                     Response.StatusCode = 404;
                     return Json(null);
-                }       
+                }
+                var promocao = database.Promocoes.First(p => p.Produto.Id == produto.Id && p.Status == true);
+                if(promocao != null){
+                    produto.PrecoVenda -= (produto.PrecoVenda * promocao.Porcentagem / 100);
+                }
             }
             else
             {

@@ -1,0 +1,46 @@
+@model IEnumerable<mktSystem.Models.Venda>
+@{
+    Layout = "_AdmLayout";
+}
+<h2>Relatório de Vendas</h2>
+
+<script>
+     $(document).ready( function () {
+        $('#thVendas').DataTable({
+            "language": {
+            "lengthMenu": "Mostrando _MENU_ registros por página",
+            "zeroRecords": "Nenhum registro encontrado",                    
+            "search": "Buscar:",
+            "info": "Mostrando _PAGE_ de _PAGES_",
+            "paginate": {
+                "first": "Primeiro",
+                "next": "Próximo",
+                "previous": "Anterior",
+                "last": "Último"
+                }
+            }
+        });
+    }); 
+</script>
+
+<table id="thVendas" class="table table-striped table-bordred">
+    <thead>
+        <td>Id</td>
+        <td>Data</td>
+        <td>Total</td>
+        <td>Valor Pago</td>
+        <td>Troco</td>
+    </thead>
+    <tbody>
+        @foreach (var venda in Model)
+        {
+            <tr>
+                <td>@venda.Id</td>
+                <td>@venda.Data</td>
+                <td>@venda.Total</td>
+                <td>@venda.ValorPago</td>
+                <td>@venda.Troco</td>
+            </tr>
+        }
+    </tbody>
+</table>
